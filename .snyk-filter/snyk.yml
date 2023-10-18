@@ -1,0 +1,6 @@
+ #This filter fails if there are: >5 medium or 3 High
+version: 2
+customFilters:
+  filter: "if ([.runs[].results[] | select(.level == \"warning\")] | length > 5) or ([.runs[].results[] | select(.level == \"error\")] | length > 3) then .runs |= map(if (.level == \"warning\" or .level == \"error\") then . else empty end) else .runs |= map(empty) end"
+  pass: "if ([.runs[].results[] | select(.level == \"warning\")] | length > 5) or ([.runs[].results[] | select(.level == \"error\")] | length > 3) then 1 else 0 end"
+  msg: "High and medium severity & upgradeable vulns found. Exit Code 1"
